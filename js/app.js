@@ -25,9 +25,9 @@ console.log("\n\n");
 let currentId = 0;
 
 class Task {
-    constructor(name, priority, category, description, doneStatus = false) {
+    constructor(title, priority, category, description, doneStatus = false) {
         this.id = ++currentId
-        this.name = name;
+        this.title = title;
         this.priority = priority;
         this.category = category;
         this.description = description;
@@ -38,16 +38,22 @@ class Task {
 // Preload some data --------------------------------------------------------------------------
 const taskList = [
 
-    new Task('Complete the Assignment', 'High', 'work', 'Complete Mod 4 assignment'),
-    new Task('Set IDs and DataIDs', 'High', 'html', 'Check HTML for IDs and DataIDs'),
-    new Task('Live filter', 'Medium', 'js', 'Search all fields on keypress'),
-    new Task('New Task Form', 'High', 'js', 'Write JS to add new tasks'),
-    new Task('Change trash icon', 'Low', 'html', 'Change to x circle PG used', true),
-    new Task('Table Styling', 'Low', 'html', 'Center priority, category'),
-    new Task('IPO Chart', 'Low', 'js', 'Fill in IPO chart'),
-    new Task('Sorting', 'Low', 'js', 'Consider sorting by priority, category'),
-    new Task('Checkbox', 'Medium', 'js', 'Checkbox does not load the value', true),
-    new Task('Current status of js', 'High', 'js', 'Tasklist')
+    new Task('Set IDs and DataIDs', 'High', 'School', 'Check HTML for IDs and DataIDs'),
+    new Task('Live filter', 'Medium', 'General', 'Search all fields on keypress', true),
+    new Task('New Task Form', 'High', 'School', 'Write JS to add new tasks', true),
+    new Task('Change trash icon', 'Low', 'General', 'Change to x circle PG used', true),
+    new Task('Table Styling', 'Low', 'Work', 'Center priority, category', true),
+    new Task('IPO Chart', 'Low', 'Work', 'Fill in IPO chart'),
+    new Task('Sorting', 'Low', 'School', 'Consider sorting by priority, category'),
+    new Task('Checkbox', 'High', 'Shopping', 'Checkbox should set new value'),
+    new Task('Filter Reset', 'Low', 'Shopping', 'Add a reset button for filters'),
+    new Task('Delete One', 'High', 'Work', 'Make delete button work'),
+    new Task('Delete All', 'Low', 'Shopping', 'Add a delete all button'),
+    new Task('Line Through Update', 'Medium', 'General', 'Use a data id and new class to use text-decoration: line-through'),
+    new Task('Esc and Enter', 'High', 'Shopping', 'Escape should blank form, enter should add new'),
+    new Task('Mobile View', 'Medium', 'Work', 'Mobile view is not great'),
+    new Task('Table resizing', 'Low', 'Shopping', 'Table columns need to be more static'),
+    new Task('Snack bar', 'Low', 'Work', 'Snack bar says task added')
 
 ]
 
@@ -57,14 +63,17 @@ const taskList = [
 
 // Set some filter default values -------------------------------------------------------------
 
-// I DID THIS QUICK BUT IT NEEDS TO BE RETHOUGHT WHEN I DO FILTER WORK
 let filterSearchSetting = '';
 let filterPrioritySetting = 'all';
 let filterCategorySetting = 'all';
 
 // Input Form Element Variables ---------------------------------------------------------------
 const resultsWindowEle = document.getElementById('task-results-window');
-
+const inputFormEle = document.getElementById('input-form');
+const taskTitleEle = document.getElementById('task-title');
+const taskCategoryEle = document.getElementById('task-category');
+const taskPriorityEle = document.getElementById('task-priority');
+const taskDescriptionEle = document.getElementById('task-description');
 
 //#endregion ==================================================================================
 
@@ -76,17 +85,20 @@ function renderTasks() {
 
     for (let i = 0; i < taskList.length; i++) {
 
-        // ADD THE FILTER CHECKS IN THE IF STATEMENT
-        if (true) {
+        if (
+            (filterSearchSetting === "" || taskList[i].title.toLowerCase().includes(filterSearchSetting.toLowerCase())) &&
+            (filterPrioritySetting === 'all' || filterPrioritySetting.includes(taskList[i].priority.toLowerCase())) &&
+            (filterCategorySetting === 'all' || filterCategorySetting.includes(taskList[i].category.toLowerCase()))
+        ) {
 
             let isTaskDoneChecked = "";
-            let isTaskTextCrossedStart = "";
-            let isTaskTextCrossedEnd = "";
+            let ifTaskTextCrossedStart = "";
+            let ifTaskTextCrossedEnd = "";
 
             if (taskList[i].doneStatus === true) {
                 isTaskDoneChecked = "checked";
-                isTaskTextCrossedStart = "<del>";
-                isTaskTextCrossedEnd = "</del>";
+                ifTaskTextCrossedStart = "<del>";
+                ifTaskTextCrossedEnd = "</del>";
             }
 
             resultsWindowEle.innerHTML += `
@@ -98,10 +110,10 @@ function renderTasks() {
                         ${isTaskDoneChecked}>
                     </td>
                     <td class="priority-${taskList[i].priority.toLowerCase()}">
-                        ${isTaskTextCrossedStart}${taskList[i].priority}${isTaskTextCrossedEnd}</td>
+                        ${ifTaskTextCrossedStart}${taskList[i].priority}${ifTaskTextCrossedEnd}</td>
                     <td class="text-center"><span class="badge bg-secondary">${taskList[i].category}</span></td>
-                    <td class="fw-bold">${isTaskTextCrossedStart}${taskList[i].name}${isTaskTextCrossedEnd}</td>
-                    <td class="text-muted small">${isTaskTextCrossedStart}${taskList[i].description}${isTaskTextCrossedEnd}</td>
+                    <td class="fw-bold">${ifTaskTextCrossedStart}${taskList[i].title}${ifTaskTextCrossedEnd}</td>
+                    <td class="text-muted small">${ifTaskTextCrossedStart}${taskList[i].description}${ifTaskTextCrossedEnd}</td>
                     <td class="text-center">
                         <button class="btn btn-link p-0" data-id="task-id-${taskList[i].id}"><i
                             class="bi bi-x-circle-fill"></i></button>
@@ -119,60 +131,39 @@ function renderTasks() {
 
 // Submit Form --------------------------------------------------------------------------------
 
-// document.getElementById('submit-form').addEventListener('click', function (e) {
-//     e.preventDefault();
-//     console.log('user input: submit-form clicked.');
+document.getElementById('input-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    console.log('user input: Add Task form clicked.');
 
-//     if (!campgroundNameInputEle.value ||
-//         !sectorInputEle.value ||
-//         !sitesTotalInputEle.value ||
-//         !sitesFCInputEle.value ||
-//         !mapURLInputEle.value ||
-//         !imageURLInputEle.value) {
-//         alert("Please fill out all fields.")
+    taskList.push(
+        new Task(
+            taskTitleEle.value,
+            taskPriorityEle.value,
+            taskCategoryEle.value,
+            taskDescriptionEle.value
+        ));
 
-//     } else {
-
-//         campgroundsList.push(
-//             new Campground(
-//                 campgroundNameInputEle.value,
-//                 sectorInputEle.value,
-//                 sitesTotalInputEle.value,
-//                 sitesFCInputEle.value,
-//                 hasWCInputEle.checked,
-//                 hasWaterInputEle.checked,
-//                 mapURLInputEle.value,
-//                 imageURLInputEle.value
-//             ));
-
-//         inputFormEle.reset();
-//         renderCampgrounds();
-//     }
-
-// });
-
-// document.getElementById('reset-form').addEventListener('click', function (e) {
-//     this.reset;
-//     console.log('user input: reset-form clicked.');
-// });
+    inputFormEle.reset();
+    renderTasks();
+});
 
 
 // Display Filters ----------------------------------------------------------------------------
 
-// document.getElementById('sector-filter').addEventListener('change', function (e) {
-//     filterSectorSetting = e.target.value;
-//     renderCampgrounds();
-// });
+document.getElementById('filter-search').addEventListener('keyup', function (e) {
+    filterSearchSetting = e.target.value;
+    renderTasks();
+});
 
-// document.getElementById('wc-filter').addEventListener('change', function (e) {
-//     filterWCSetting = e.target.value;
-//     renderCampgrounds();
-// });
+document.getElementById('filter-priority').addEventListener('change', function (e) {
+    filterPrioritySetting = e.target.value;
+    renderTasks();
+});
 
-// document.getElementById('water-filter').addEventListener('change', function (e) {
-//     filterWaterSetting = e.target.value;
-//     renderCampgrounds();
-// });
+document.getElementById('filter-category').addEventListener('change', function (e) {
+    filterCategorySetting = e.target.value;
+    renderTasks();
+});
 
 //#endregion ==================================================================================
 

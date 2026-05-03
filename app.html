@@ -31,23 +31,23 @@
                 <small class="d-none d-md-block">Enter to Save | Esc to Clear | Shift to Refresh</small>
             </div>
             <div class="card-body">
-                <form id="task_planner_input_form" class="row g-3">
+                <form id="input-form" class="row g-3">
                     <div class="col-md-3">
                         <label class="form-label fw-bold">Category</label>
-                        <select id="task_planner_task_category" class="form-select">
-                            <option value="general">General</option>
-                            <option value="work">Work</option>
-                            <option value="shopping">Shopping</option>
-                            <option value="home_improvement">Home Improvement</option>
+                        <select id="task-category" class="form-select">
+                            <option value="General">General</option>
+                            <option value="Work">Work</option>
+                            <option value="School">School</option>
+                            <option value="Shopping">Shopping</option>
                         </select>
                     </div>
                     <div class="col-md-6">
                         <label class="form-label fw-bold">Title *</label>
-                        <input type="text" id="task_planner_task_title" class="form-control" required>
+                        <input type="text" id="task-title" class="form-control" required>
                     </div>
                     <div class="col-md-3">
                         <label class="form-label fw-bold">Priority</label>
-                        <select id="task_planner_time_required" class="form-select">
+                        <select id="task-priority" class="form-select">
                             <option value="high">High</option>
                             <option value="medium">Medium</option>
                             <option value="low">Low</option>
@@ -55,7 +55,7 @@
                     </div>
                     <div class="col-12">
                         <label class="form-label fw-bold">Description</label>
-                        <textarea id="task_planner_task_description" class="form-control" rows="2"></textarea>
+                        <textarea id="task-description" class="form-control" rows="2"></textarea>
                     </div>
                     <div class="col-12 text-end">
                         <button type="submit" class="btn btn-primary px-4">Add Task</button>
@@ -69,24 +69,24 @@
             <div class="col-md-5">
                 <div class="input-group">
                     <span class="input-group-text"><i class="bi bi-search"></i></span>
-                    <input type="text" id="task_planner_search_filter" class="form-control"
+                    <input type="text" id="filter-search" class="form-control"
                         placeholder="Search tasks by name...">
                 </div>
             </div>
             <div class="col-md-3">
-                <select id="task_planner_priority_control" class="form-select">
-                    <option value="abc">All Priorities</option>
-                    <option value="a">A only</option>
-                    <option value="ab">A and B</option>
+                <select id="filter-priority" class="form-select">
+                    <option value="all">All Priorities</option>
+                    <option value="high">High only</option>
+                    <option value="high and medium">High and Medium</option>
                 </select>
             </div>
             <div class="col-md-4">
-                <select id="task_planner_category_filter" class="form-select">
+                <select id="filter-category" class="form-select">
                     <option value="all">All Categories</option>
                     <option value="general">General</option>
                     <option value="work">Work</option>
+                    <option value="school">School</option>
                     <option value="shopping">Shopping</option>
-                    <option value="home_improvement">Home Improvement</option>
                 </select>
             </div>
         </section>
