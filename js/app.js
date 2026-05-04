@@ -38,6 +38,8 @@ class Task {
 // Preload some data --------------------------------------------------------------------------
 const taskList = [
 
+    new Task('Revise render HTML', 'Low', 'School', 'Mod 5 cars render is better than mine'),
+    new Task('Review Filter', 'Low', 'School', 'Mod 5 filter function is neater'),
     new Task('Set IDs and DataIDs', 'High', 'School', 'Check HTML for IDs and DataIDs', true),
     new Task('Live filter', 'Medium', 'General', 'Search all fields on keypress', true),
     new Task('New Task Form', 'High', 'School', 'Write JS to add new tasks', true),
@@ -50,10 +52,10 @@ const taskList = [
     new Task('Delete One', 'High', 'Work', 'Make delete button work', true),
     new Task('Delete All', 'Low', 'Shopping', 'Add a delete all button'),
     new Task('Line Through Update', 'Medium', 'General', 'Use a data id and new class to use text-decoration: line-through', true),
-    new Task('Esc and Enter', 'High', 'Shopping', 'Escape should blank form, enter should add new'),
+    new Task('Esc and Enter', 'High', 'Shopping', 'Escape should blank form, enter should add new', true),
     new Task('Mobile View', 'Medium', 'Work', 'Mobile view is not great'),
     new Task('Table resizing', 'Low', 'Shopping', 'Table columns need to be more static'),
-    new Task('Snack bar', 'Medium', 'Work', 'Snack bar says task added... or delete the style and HTML')
+    new Task('Succ Message', 'Medium', 'Work', 'Status bar says task added... or delete the style and HTML div')
 
 ]
 
@@ -77,7 +79,7 @@ const taskDescriptionEle = document.getElementById('task-description');
 
 //#endregion ==================================================================================
 
-//#region Render Function =====================================================================
+//#region Functions ===========================================================================
 
 function renderTasks() {
 
@@ -115,21 +117,15 @@ function renderTasks() {
                     </td>
             </tr>`
         }
-
     }
 }
 
-//#endregion ==================================================================================
+function createTask() {
 
-//#region Event Listeners =====================================================================
-
-// Submit Form --------------------------------------------------------------------------------
-
-document.getElementById('input-form').addEventListener('submit', function (e) {
-
-    e.preventDefault();
-
-    console.log('user input: Add Task form clicked.');
+    if (!taskTitleEle.value || !taskPriorityEle.value || !taskCategoryEle.value) {
+        alert("Title, Category and Priority are all required.");
+        return;
+    }
 
     taskList.push(
         new Task(
@@ -141,8 +137,30 @@ document.getElementById('input-form').addEventListener('submit', function (e) {
 
     inputFormEle.reset();
     renderTasks();
+};
+
+
+//#endregion ==================================================================================
+
+//#region Event Listeners =====================================================================
+
+// Submit Form --------------------------------------------------------------------------------
+
+document.getElementById('input-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    createTask();
 });
 
+document.getElementById('input-form').addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') {
+        e.preventDefault();
+        createTask();
+    }
+
+    if (e.key === 'Escape') {
+        this.reset();
+    }
+});
 
 // Display Filters ----------------------------------------------------------------------------
 
