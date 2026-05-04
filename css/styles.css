@@ -1,11 +1,11 @@
 .fs-responsive {
-    font-size: 1.5rem;
+    font-size: 1rem !important;
     font-weight: bold;
 }
 
-.priority-high { border-left: 5px solid #dc3545; }
-.priority-medium { border-left: 5px solid #ffc107; }
-.priority-low { border-left: 5px solid #198754; }
+.priority-high { border-left: 5px solid var(--bs-danger); }
+.priority-medium { border-left: 5px solid var(--bs-warning); }
+.priority-low { border-left: 5px solid var(--bs-success); }
 
 .task-completed {
     text-decoration: line-through;
@@ -17,6 +17,22 @@
     top: 70px;
     z-index: 1020;
     background: white;
+}
+
+.filter-btn-color {
+    color: var(--bs-body-color);
+  
+    &:hover {
+        color: var(--bs-primary);
+    }
+}
+
+.delete-btn-color {
+    color: var(--bs-body-color);
+  
+    &:hover {
+        color: var(--bs-danger);
+    }
 }
 
 #task-results-window {
@@ -71,6 +87,6 @@ tr:has(input[type="checkbox"]:checked) td:not(:first-child):not(:last-child) {
 
 @media (max-width: 768px) {
     .fs-responsive {
-        font-size: .8rem;
+        font-size: .7rem !important;
     }
 }

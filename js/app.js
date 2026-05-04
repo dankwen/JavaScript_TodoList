@@ -2,8 +2,6 @@
 // Task Planner Assignment
 
 
-// NOTE THIS IS PORTED FROM THE LAST ASSIGNMENT AND NOT UPDATED YET
-
 //#region IPO Chart ===========================================================================
 console.groupCollapsed("---------- IPO Chart ----------");
 console.group("---------- INPUTS -----------");
@@ -21,7 +19,8 @@ console.groupEnd();
 console.log("\n\n");
 //#endregion ==================================================================================
 
-//#region Define Campground Class =============================================================
+//#region Define Task Class ===================================================================
+
 let currentId = 0;
 
 class Task {
@@ -38,20 +37,20 @@ class Task {
 // Preload some data --------------------------------------------------------------------------
 const taskList = [
 
-    new Task('Revise render HTML', 'Low', 'School', 'Mod 5 cars render is better than mine'),
-    new Task('Review Filter', 'Low', 'School', 'Mod 5 filter function is neater'),
+    new Task('Revise render HTML', 'Low', 'School', 'Mod 5 cars render is better than mine', true),
+    new Task('Review Done Sort', 'Low', 'School', 'Done reverse should fail if none are done', true),
     new Task('Set IDs and DataIDs', 'High', 'School', 'Check HTML for IDs and DataIDs', true),
     new Task('Live filter', 'Medium', 'General', 'Search all fields on keypress', true),
     new Task('New Task Form', 'High', 'School', 'Write JS to add new tasks', true),
     new Task('Change trash icon', 'Low', 'General', 'Change to x circle PG used', true),
     new Task('Table Styling', 'Low', 'Work', 'Center priority, category', true),
     new Task('IPO Chart', 'High', 'Work', 'Fill in IPO chart'),
-    new Task('Sorting', 'Low', 'School', 'Consider sorting by priority, category'),
+    new Task('Sorting', 'Low', 'School', 'Consider sorting by priority, category', true),
     new Task('Checkbox', 'High', 'Work', 'Checkbox should set new value', true),
     new Task('Filter Reset', 'Low', 'Shopping', 'Add a reset button for filters'),
     new Task('Delete One', 'High', 'Work', 'Make delete button work', true),
-    new Task('Delete All', 'Low', 'Shopping', 'Add a delete all button'),
-    new Task('Line Through Update', 'Medium', 'General', 'Use a data id and new class to use text-decoration: line-through', true),
+    new Task('Delete All', 'Low', 'Shopping', 'Delete all button is not working right'),
+    new Task('Line Through Update', 'Medium', 'General', 'Use a data id and new class add a line through the tr', true),
     new Task('Esc and Enter', 'High', 'Shopping', 'Escape should blank form, enter should add new', true),
     new Task('Mobile View', 'Medium', 'Work', 'Mobile view is not great'),
     new Task('Table resizing', 'Low', 'Shopping', 'Table columns need to be more static'),
@@ -87,35 +86,36 @@ function renderTasks() {
 
     for (let i = 0; i < taskList.length; i++) {
 
+        const task = taskList[i];
+
         if (
-            (filterSearchSetting === "" || taskList[i].title.toLowerCase().includes(filterSearchSetting.toLowerCase())) &&
-            (filterPrioritySetting === 'all' || filterPrioritySetting.includes(taskList[i].priority.toLowerCase())) &&
-            (filterCategorySetting === 'all' || filterCategorySetting.includes(taskList[i].category.toLowerCase()))
+            (filterSearchSetting === "" || task.title.toLowerCase().includes(filterSearchSetting.toLowerCase())) &&
+            (filterPrioritySetting === 'all' || filterPrioritySetting.includes(task.priority.toLowerCase())) &&
+            (filterCategorySetting === 'all' || filterCategorySetting.includes(task.category.toLowerCase()))
         ) {
 
             let isTaskDoneChecked = "";
-
-            if (taskList[i].doneStatus === true) {
+            if (task.doneStatus === true) {
                 isTaskDoneChecked = "checked";
             }
 
-            resultsWindowEle.innerHTML += `
-            <tr>
+            const row = document.createElement('tr');
+            row.innerHTML = `
                     <td class="text-center">
                         <input type="checkbox" 
                         class="form-check-input" 
-                        data-id="${taskList[i].id}" 
+                        data-id="${task.id}" 
                         ${isTaskDoneChecked}>
-                    </td><td class="priority-${taskList[i].priority.toLowerCase()}">${taskList[i].priority}</td>
-                    <td class="text-center"><span class="badge bg-secondary">${taskList[i].category}</span></td>
-                    <td class="fw-bold">${taskList[i].title}</td>
-                    <td class="text-muted small">${taskList[i].description}</td>
+                    </td><td class="priority-${task.priority.toLowerCase()}">${task.priority}</td>
+                    <td class="text-center"><span class="badge bg-secondary">${task.category}</span></td>
+                    <td class="fw-bold">${task.title}</td>
+                    <td class="text-muted small">${task.description}</td>
                     <td class="text-center">
                         <button class="btn btn-link p-0">
-                        <i class="bi bi-x-circle-fill" data-id="${taskList[i].id}"></i>
+                        <i class="bi bi-x-circle-fill" data-id="${task.id}"></i>
                         </button>
-                    </td>
-            </tr>`
+                    </td>`
+            resultsWindowEle.appendChild(row);
         }
     }
 }
@@ -123,7 +123,7 @@ function renderTasks() {
 function createTask() {
 
     if (!taskTitleEle.value || !taskPriorityEle.value || !taskCategoryEle.value) {
-        alert("Title, Category and Priority are all required.");
+        alert("Title, Category, and Priority are all required.");
         return;
     }
 
@@ -136,6 +136,10 @@ function createTask() {
         ));
 
     inputFormEle.reset();
+    weSortedDone = false;
+    weSortedPriority = false;
+    weSortedCategory = false;
+
     renderTasks();
 };
 
@@ -144,7 +148,7 @@ function createTask() {
 
 //#region Event Listeners =====================================================================
 
-// Submit Form --------------------------------------------------------------------------------
+//#region Submit Form -------------------------------------------------------------------------
 
 document.getElementById('input-form').addEventListener('submit', function (e) {
     e.preventDefault();
@@ -162,7 +166,9 @@ document.getElementById('input-form').addEventListener('keydown', function (e) {
     }
 });
 
-// Display Filters ----------------------------------------------------------------------------
+//#endregion ----------------------------------------------------------------------------------
+
+//#region Display Filters ---------------------------------------------------------------------
 
 document.getElementById('filter-search').addEventListener('keyup', function (e) {
     filterSearchSetting = e.target.value;
@@ -179,8 +185,143 @@ document.getElementById('filter-category').addEventListener('change', function (
     renderTasks();
 });
 
+//#endregion ----------------------------------------------------------------------------------
 
-// Task Event Listeners -----------------------------------------------------------------------
+//#region Sort Event Listeners ----------------------------------------------------------------
+
+weSortedDone = false;
+weSortedPriority = false;
+weSortedCategory = false;
+
+document.getElementById('sort-done-btn').addEventListener('click', function (e) {
+
+    switch (weSortedDone) {
+        case false:
+            taskList.sort(function (a, b) {
+                return a.doneStatus - b.doneStatus;
+            })
+            weSortedDone = true;
+            weSortedPriority = false;
+            weSortedCategory = false;
+            break;
+        default:
+            taskList.sort(function (a, b) {
+                return b.doneStatus - a.doneStatus;
+            })
+            weSortedDone = false;
+            weSortedPriority = false;
+            weSortedCategory = false;
+            break;
+    };
+    renderTasks();
+});
+
+document.getElementById('sort-priority-btn').addEventListener('click', function (e) {
+
+    switch (weSortedPriority) {
+        case false:
+            taskList.sort(function (a, b) {
+
+                let aRank = 0;
+                let bRank = 0;
+
+                if (a.priority === 'High') { aRank = 1; }
+                else if (a.priority === 'Medium') { aRank = 2; }
+                else { aRank = 3; }
+
+                if (b.priority === 'High') { bRank = 1; }
+                else if (b.priority === 'Medium') { bRank = 2; }
+                else { bRank = 3; }
+
+                return aRank - bRank;
+            })
+
+            weSortedDone = false;
+            weSortedPriority = true;
+            weSortedCategory = false;
+            break;
+
+        default:
+            taskList.sort(function (a, b) {
+
+                let aRank = 0;
+                let bRank = 0;
+
+                if (a.priority === 'High') { aRank = 1; }
+                else if (a.priority === 'Medium') { aRank = 2; }
+                else { aRank = 3; }
+
+                if (b.priority === 'High') { bRank = 1; }
+                else if (b.priority === 'Medium') { bRank = 2; }
+                else { bRank = 3; }
+
+                return bRank - aRank;
+            })
+
+            weSortedDone = false;
+            weSortedPriority = false;
+            weSortedCategory = false;
+            break;
+    };
+    renderTasks();
+});
+
+document.getElementById('sort-category-btn').addEventListener('click', function (e) {
+
+    switch (weSortedCategory) {
+        case false:
+            taskList.sort(function (a, b) {
+
+                if (a.category > b.category) { return 1; }
+                else if (a.category < b.category) { return -1; }
+                else { return 0; }
+
+            })
+            weSortedDone = false;
+            weSortedPriority = false;
+            weSortedCategory = true;
+            break;
+
+        default:
+            taskList.reverse(function (a, b) {
+                if (a.category > b.category) { return 1; }
+                else if (a.category < b.category) { return -1; }
+                else { return 0; }
+            })
+            weSortedDone = false;
+            weSortedPriority = false;
+            weSortedCategory = false;
+            break;
+    };
+    renderTasks();
+});
+
+//#endregion ----------------------------------------------------------------------------------
+
+// Delete Event Listeners ---------------------------------------------------------------------
+
+document.getElementById('delete-completed-btn').addEventListener('click', function (e) {
+
+    if (confirm('Are you sure you want to delete all completed items?')) {
+
+        for (let i = 0; i < taskList.length; i++) {
+
+            thisTask = taskList[i];
+            console.log(i, thisTask.title, thisTask.doneStatus);
+
+            if (taskList[i].doneStatus) {
+                console.log('imma delete this one');
+                taskList.splice(taskList[i], 1);
+            }
+        }
+        renderTasks();
+    }
+
+});
+
+
+
+//#region Task Event Listeners ----------------------------------------------------------------
 
 document.getElementById('task-results-window').addEventListener('click', function (e) {
 
@@ -224,7 +365,7 @@ document.getElementById('task-results-window').addEventListener('click', functio
 
 });
 
-
+//#endregion ----------------------------------------------------------------------------------
 
 //#endregion ==================================================================================
 
