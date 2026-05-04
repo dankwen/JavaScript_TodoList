@@ -44,7 +44,7 @@
     }
 }
 
-#task_planner_success_message {
+#success-message {
     position: fixed;
     top: 20px;
     right: 20px;
@@ -52,6 +52,22 @@
     display: none; /* Hidden by default; show with JS */
 }
 
+
+/* Gemini helped me with this style to show a strikethrough line on completed tasks */
+  /* It sets the <tr> up to have this style but excludes the first and last <td> (where we have controls) */
+  /* It creates a 4% height strikethrough line in the current text color, and grays the rest of the text */
+
+tr:has(input[type="checkbox"]:checked) td:not(:first-child):not(:last-child) {
+  background-image: linear-gradient(
+    transparent 0%, 
+    transparent 48%, 
+    currentColor 48%, 
+    currentColor 52%, 
+    transparent 52%, 
+    transparent 100%
+  );
+  color: var(--bs-tertiary-color); 
+}
 
 @media (max-width: 768px) {
     .fs-responsive {
