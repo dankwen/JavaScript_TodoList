@@ -117,20 +117,20 @@
                                 <button type="button"
                                     class="btn btn-link p-0 text-decoration-none fw-bold filter-btn-color"
                                     id="sort-done-btn">
-                                    Done&nbsp;<i class="bi bi-arrow-down-up small"></i>
+                                    Done&nbsp;<span id="sort-done-icon"></span>
                                 </button>
                             </th>
                             <th>
                                 <button type="button"
                                     class="btn btn-link p-0 text-decoration-none fw-bold filter-btn-color"
                                     id="sort-priority-btn">
-                                    Priority&nbsp;<i class="bi bi-arrow-down-up"></i>
+                                    Priority&nbsp;<span id="sort-priority-icon"></span>
                             </th>
                             <th class="text-center">
                                 <button type="button"
                                     class="btn btn-link p-0 text-decoration-none fw-bold filter-btn-color"
                                     id="sort-category-btn">
-                                    Category&nbsp;<i class="bi bi-arrow-down-up"></i>
+                                    Category&nbsp;<span id="sort-category-icon"></span>
                             </th>
                             <th>Title</th>
                             <th>Description</th>
@@ -145,17 +145,7 @@
                     <tbody id="task-table-body">
 
 
-                        <!-- Task Results Go Here -->
-                        <tr>
-                            <td class="text-center"><input type="checkbox" class="form-check-input"></td>
-                            <td class="priority-high">High</td>
-                            <td class="text-center"><span class="badge bg-secondary">Work</span></td>
-                            <td class="fw-bold">Check JavaScript Link</td>
-                            <td class="text-muted small">If this shows, the JS link is broken</td>
-                            <td class="text-center">
-                                <button class="btn btn-link p-0"><i class="bi bi-x-circle-fill"></i></button>
-                            </td>
-                        </tr>
+                        <!-- Rendered by renderTasks() Function -->
 
 
                     </tbody>

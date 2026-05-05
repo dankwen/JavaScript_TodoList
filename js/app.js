@@ -66,6 +66,9 @@ const taskTitleEle = document.getElementById('task-title');
 const taskCategoryEle = document.getElementById('task-category');
 const taskPriorityEle = document.getElementById('task-priority');
 const taskDescriptionEle = document.getElementById('task-description');
+const sortDoneIconEle = document.getElementById('sort-done-icon');
+const sortPriorityIconEle = document.getElementById('sort-priority-icon');
+const sortCategoryIconEle = document.getElementById('sort-category-icon');
 
 // Filter Default Values ----------------------------------------------------------------------
 let filterSearchSetting = '';
@@ -80,6 +83,8 @@ let weSortedCategory = false;
 //#endregion ==================================================================================
 
 //#region Functions ===========================================================================
+
+// Main Render Function -----------------------------------------------------------------------
 
 function renderTasks() {
 
@@ -102,18 +107,17 @@ function renderTasks() {
 
             const row = document.createElement('tr');
             row.innerHTML = `
-                    <td class="text-center">
+                    <td class="text-center" data-id="${task.id}">
                         <input type="checkbox" 
                         class="form-check-input" 
-                        data-id="${task.id}" 
                         ${isTaskDoneChecked}>
                     </td><td class="priority-${task.priority.toLowerCase()}">${task.priority}</td>
                     <td class="text-center"><span class="badge bg-secondary">${task.category}</span></td>
                     <td class="fw-bold">${task.title}</td>
                     <td class="text-muted small">${task.description}</td>
                     <td class="text-center">
-                        <button class="btn btn-link p-0">
-                        <i class="bi bi-x-circle-fill" data-id="${task.id}"></i>
+                        <button class="btn btn-link p-0" data-id="${task.id}">
+                        <i class="bi bi-x-circle-fill"></i>
                         </button>
                     </td>`
             resultsWindowEle.appendChild(row);
@@ -122,6 +126,7 @@ function renderTasks() {
     // console.log('NOTE: I disabled saving for now. Restore and remove this alert.');
     saveTasksToStorage(taskList);
 }
+// Create a New Task --------------------------------------------------------------------------
 
 function createTask() {
 
@@ -146,6 +151,22 @@ function createTask() {
     renderTasks();
 };
 
+// Update Sort Icons --------------------------------------------------------------------------
+
+function updateSortIcons(targetIcon, direction) {
+    sortPriorityIconEle.innerHTML = '';
+    sortCategoryIconEle.innerHTML = '';
+
+    switch (targetIcon) {
+        case 'priority':
+            sortPriorityIconEle.innerHTML = `<i class="bi bi-arrow-${direction}"></i>`;
+            break;
+        case 'category':
+            sortCategoryIconEle.innerHTML = `<i class="bi bi-arrow-${direction}"></i>`;
+            break;
+    }
+
+}
 
 //#endregion ==================================================================================
 
@@ -190,7 +211,7 @@ document.getElementById('filter-category').addEventListener('change', function (
 
 //#endregion ----------------------------------------------------------------------------------
 
-//#region Listeners: Sort Event ---------------------------------------------------------------
+//#region Listeners: Sort Events --------------------------------------------------------------
 
 document.getElementById('sort-done-btn').addEventListener('click', function (e) {
 
@@ -234,7 +255,7 @@ document.getElementById('sort-priority-btn').addEventListener('click', function 
 
                 return aRank - bRank;
             })
-
+            updateSortIcons('priority', 'down');
             weSortedDone = false;
             weSortedPriority = true;
             weSortedCategory = false;
@@ -242,6 +263,7 @@ document.getElementById('sort-priority-btn').addEventListener('click', function 
 
         default:
             taskList.reverse();
+            updateSortIcons('priority', 'up');
     };
     renderTasks();
 });
@@ -257,6 +279,7 @@ document.getElementById('sort-category-btn').addEventListener('click', function 
                 else { return 0; }
 
             })
+            updateSortIcons('category', 'down');
             weSortedDone = false;
             weSortedPriority = false;
             weSortedCategory = true;
@@ -264,6 +287,7 @@ document.getElementById('sort-category-btn').addEventListener('click', function 
 
         default:
             taskList.reverse();
+            updateSortIcons('category', 'up');
     };
     renderTasks();
 });
@@ -273,55 +297,39 @@ document.getElementById('sort-category-btn').addEventListener('click', function 
 //#region Listeners: Task Update Events -------------------------------------------------------
 
 document.getElementById('task-table-body').addEventListener('click', function (e) {
-
-
-    // About to refactor this... I have an idea
-    // where maybe i can move the dataID to the <tr> itself
-    // and use closest and parentElement to get the dataset id
-    // like in M5L1 practice line 58-61
-    // I undid the changes though before this push so go back and make the changes to the <tr>
-
     const finishTask = e.target.closest('.form-check-input');
     const deleteTask = e.target.closest('.bi-x-circle-fill');
 
     if (finishTask) {
-
-        const id = Number(finishTask.dataset.id);
-
+        const id = Number(finishTask.parentElement.dataset.id);
         const index = taskList.findIndex(function (task) {
-            if (task.id === id) {
-                return true;
-            }
+            if (task.id === id) { return true; }
             return false;
         });
 
-        taskList[index].doneStatus = !taskList[index].doneStatus;
-        console.log(`i just updated tasklist item ${taskList[index].title} with done status ${taskList[index].doneStatus}`);
-
-        renderTasks();
+        if (index > -1) {
+            taskList[index].doneStatus = !taskList[index].doneStatus;
+            renderTasks();
+        }
     }
 
     if (deleteTask) {
-
-        const id = Number(deleteTask.dataset.id);
-
+        const id = Number(deleteTask.parentElement.dataset.id);
         const index = taskList.findIndex(function (task) {
-            if (task.id === id) {
-                return true;
-            }
+            if (task.id === id) { return true; }
             return false;
         });
 
-        if (confirm(`Are you sure you want to permanently delete the task: ${taskList[index].title}? (WARNING: This can not be undone!)`)) {
-            taskList.splice(index, 1);
-
-            renderTasks();
+        if (index > -1) {
+            if (confirm(`Are you sure you want to permanently delete the task: ${taskList[index].title}? (WARNING: This can not be undone!)`)) {
+                taskList.splice(index, 1);
+                renderTasks();
+            }
         }
     }
 });
 
 document.getElementById('delete-completed-btn').addEventListener('click', function (e) {
-
     if (confirm('Are you sure you want to permanently delete all completed items? (WARNING: This can not be undone!)')) {
         taskList = taskList.filter(function (task) {
             return !task.doneStatus;
