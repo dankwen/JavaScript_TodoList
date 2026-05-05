@@ -303,7 +303,7 @@ document.getElementById('task-table-body').addEventListener('click', function (e
             return false;
         });
 
-        taskList[index].doneStatus = true;
+        taskList[index].doneStatus = !taskList[index].doneStatus;
         console.log(`i just updated tasklist item ${taskList[index].title} with done status ${taskList[index].doneStatus}`);
 
         renderTasks();
