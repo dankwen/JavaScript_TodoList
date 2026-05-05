@@ -49,15 +49,6 @@
     }
 }
 
-#success-message {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    z-index: 2000;
-    display: none; /* Hidden by default; show with JS */
-}
-
-
 /* Gemini helped me with this style to show a strikethrough line on completed tasks */
   /* It sets the <tr> up to have this style but excludes the first and last <td> (where we have controls) */
   /* It creates a 4% height strikethrough line in the current text color, and grays the rest of the text */

@@ -138,7 +138,7 @@ function renderTasks() {
                     </td><td class="priority-${task.priority.toLowerCase()}">${task.priority}</td>
                     <td class="text-center"><span class="badge bg-secondary">${task.category}</span></td>
                     <td class="fw-bold">${task.title}</td>
-                    <td class="text-muted small">${task.description}</td>
+                    <td class="text-muted small d-none d-md-table-cell">${task.description}</td>
                     <td class="text-center">
                         <button class="btn btn-link p-0" data-id="${task.id}">
                         <i class="bi bi-x-circle-fill"></i>
