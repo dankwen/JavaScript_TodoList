@@ -3,17 +3,41 @@
 
 
 //#region IPO Chart ===========================================================================
-
 console.groupCollapsed("---------- IPO Chart ----------");
 console.group("---------- INPUTS -----------");
-
+console.log("We start by loading some functions from ./localstorage.js");
+console.log("Then we load some data (taskList) from local storage.");
+console.log("Listeners on the Submit form trigger createTask().");
+console.log("Listeners on the Filter controls set new filter settings and call renderTasks().");
+console.log("Listeners on the Sort table headers sort the taskList array and call renderTasks().");
+console.log("Listeners on the Submit form trigger createTask().");
+console.log("Listeners on the table headers look for sort inputs and delete all inputs.");
+console.log("Listeners on the table row look for updates to make to the listed <tr> item.");
 console.groupEnd();
 
 console.group("---------- PROCESS ----------");
-
+console.log("We create a Task class.");
+console.log("We reset the currentId (serial for tasks) to the max of those pre-loaded.");
+console.log("Function renderTasks() checks filter settings and renders tasks in HTML.");
+console.log("Function updateSortIcons renders HTML icons when sorts are selected.");
+console.log("When a Filter listener is clicked renderTasks() filters the view.");
+console.log("When a new task form submit is detected it calls createTask().");
+console.log("When a Sort listener is clicked they sort the array.");
+console.log("When a table checkbox is marked, the data table doneStatus is toggled.");
+console.log("When a table delete row is clicked, the item is removed from taskList.");
+console.log("When a Delete All Checked button is clicked it filters the array and deletes all the doneStatus=true tasks.");
 console.groupEnd();
 
 console.group("---------- OUTPUT -----------");
+console.log("Function renderTasks() function outputs HTML to 'task-table-body'.");
+console.log("Function renderTasks() also saves taskList to localStorage().");
+console.log("Function createTask() creates a new task in the array & calls render function.");
+console.log("Filter functions change settings that impact the output of renderTasks().");
+console.log("Sort functions change the order items are displayed in the table.");
+console.log("When sort functions are chosen, some update icons in the table heading.");
+console.log("Delete one listener can remove items from the array and display table.");
+console.log("Delete all checked items listener can remove items from the array and display table.");
+console.log("");
 
 console.groupEnd();
 console.groupEnd();
@@ -59,7 +83,7 @@ if (taskList.length > 0) {
 
 //#region Define Variables ====================================================================
 
-// Input Form Element Variables ---------------------------------------------------------------
+// Element Variables --------------------------------------------------------------------------
 const resultsWindowEle = document.getElementById('task-table-body');
 const inputFormEle = document.getElementById('input-form');
 const taskTitleEle = document.getElementById('task-title');
