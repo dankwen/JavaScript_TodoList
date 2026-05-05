@@ -1,7 +1,3 @@
-.fs-responsive {
-    font-size: 1rem !important;
-    font-weight: bold;
-}
 
 .priority-high { border-left: 5px solid var(--bs-danger); }
 .priority-medium { border-left: 5px solid var(--bs-warning); }
@@ -12,18 +8,11 @@
     opacity: 0.6;
 }
 
-.sticky-toolbar {
-    position: sticky;
-    top: 70px;
-    z-index: 1020;
-    background: white;
-}
-
 .filter-btn-color {
     color: var(--bs-body-color);
   
     &:hover {
-        color: var(--bs-primary);
+        color: var(--bs-link-hover-color);
     }
 }
 
@@ -35,19 +24,19 @@
     }
 }
 
-#task-results-window {
+#task-table-body {
     tr {
 
         td:first-child {
             input {
-                font-size: 1.4em;
+                font-size: 1.3em;
                 cursor: pointer;
             }
         }
 
         td:last-child {
             i {
-                color: var(--bs-tertiary-color);
+                color: var(--bs-gray-400);
                 font-size: 1.2em;
                 cursor: pointer;
 
@@ -72,7 +61,6 @@
 /* Gemini helped me with this style to show a strikethrough line on completed tasks */
   /* It sets the <tr> up to have this style but excludes the first and last <td> (where we have controls) */
   /* It creates a 4% height strikethrough line in the current text color, and grays the rest of the text */
-
 tr:has(input[type="checkbox"]:checked) td:not(:first-child):not(:last-child) {
   background-image: linear-gradient(
     transparent 0%, 
@@ -85,8 +73,3 @@ tr:has(input[type="checkbox"]:checked) td:not(:first-child):not(:last-child) {
   color: var(--bs-tertiary-color); 
 }
 
-@media (max-width: 768px) {
-    .fs-responsive {
-        font-size: .7rem !important;
-    }
-}
