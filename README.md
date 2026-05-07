@@ -28,7 +28,7 @@ Check off items that are complete.
 Use data attributes:
   Each task element must have a unique data-id.
   Add data attributes as needed. 
-  Pressing Enter in the form should submit a new task. Pressing Escape should clear the form. All variables should be prefixed with task_planer_. Shift should reload the page.
+  Pressing Enter in the form should submit a new task. Pressing Escape should clear the form. Shift should reload the page.
 
 Extra Credit (Not Required) -----
 
