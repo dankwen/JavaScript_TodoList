@@ -5,7 +5,7 @@ The assignment was:
 Project 4: To-Do List — Events & Interfaces
 You have received the following from a client:
 
-I need a simple to-do list for my site. I want to add tasks, filter tasks, and mark them as done. The interface should respond to typing, clicking, and keyboard shortcuts,(such as pressing shift refreshing the page), though this will be primarily used on mobile devices.
+I need a simple to-do list for my site. I want to add tasks, filter tasks, and mark them as done. The interface should respond to typing, clicking, and keyboard shortcuts, though this will be primarily used on mobile devices.
 
 Create a functioning application based on the client’s request. Your instructor will act as the client. 
 
@@ -28,7 +28,7 @@ Check off items that are complete.
 Use data attributes:
   Each task element must have a unique data-id.
   Add data attributes as needed. 
-  Pressing Enter in the form should submit a new task. Pressing Escape should clear the form. Shift should reload the page.
+  Pressing Enter in the form should submit a new task. Pressing Escape should clear the form.
 
 Extra Credit (Not Required) -----
 
