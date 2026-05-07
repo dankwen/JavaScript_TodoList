@@ -3,6 +3,7 @@ This was a student project to create a task list.
 The assignment was: 
 
 Project 4: To-Do List — Events & Interfaces
+
 You have received the following from a client:
 
 I need a simple to-do list for my site. I want to add tasks, filter tasks, and mark them as done. The interface should respond to typing, clicking, and keyboard shortcuts, though this will be primarily used on mobile devices.
@@ -17,9 +18,7 @@ Provide a form to add tasks:
   Title
   Description
   Category (e.g. shopping, home improvement, work, etc)
-  Submit
-
-Upon submission, the application should create and display a task object.
+  Submit: Upon submission, the application should create and display a task object.
 
 Render tasks in a user friendly format.
 
@@ -28,7 +27,8 @@ Check off items that are complete.
 Use data attributes:
   Each task element must have a unique data-id.
   Add data attributes as needed. 
-  Pressing Enter in the form should submit a new task. Pressing Escape should clear the form.
+
+Pressing Enter in the form should submit a new task. Pressing Escape should clear the form.
 
 Extra Credit (Not Required) -----
 
