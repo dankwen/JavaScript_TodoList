@@ -16,7 +16,6 @@ Technical Requirements -----
 Provide a form to add tasks:
   Title
   Description
-  Time Required
   Category (e.g. shopping, home improvement, work, etc)
   Submit
 
